@@ -9,7 +9,7 @@
 /**
  * Note: I created my SQL table in PuTTY using the following command:
  * 
- * CREATE TABLE project_data (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(320), age INT, gender CHAR(2), version INT, favorite VARCHAR(120));
+ * CREATE TABLE project_data (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(320), age INT, gender CHAR(2), pronoun CHAR(2), version INT, favorite VARCHAR(120));
  */
 
 # Retrieved the hashed password as discussed in classes.
@@ -28,7 +28,7 @@ function validate(){
         return "Error: Incorrect Password.";
     }
     # Next, let's make sure everything was filled in:
-    if(($_POST["email-name"] == NULL) or ($_POST["age"] == NULL) or ($_POST["gender"] == "") or ($_POST["version"] == NULL) or ($_POST["favorite"] == NULL)){
+    if(($_POST["email-name"] == NULL) or ($_POST["age"] == NULL) or ($_POST["gender"] == "") or ($_POST["pronoun"] == "") or ($_POST["version"] == NULL) or ($_POST["favorite"] == NULL)){
         return "Error: You have not filled in all questions.";
     }
     # Now, let's make sure the results make sense.
@@ -74,6 +74,11 @@ function validate(){
         return "Please select a gender from the gender dropdown.";
     }
 
+    # Pronoun
+    if(strlen($_POST["pronoun"]) != 2){
+        return "Please select pronouns from the gender dropdown.";
+    }
+
     # Version
     if(!is_numeric($_POST["version"])){
         return "Please enter a number for Version.";
@@ -95,10 +100,11 @@ function sanitize(){
     $email = filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL);
     $age = (int)$_POST["age"];
     $gender = htmlentities($_POST["gender"]);
+    $pronoun = htmlentities($_POST["pronoun"]);
     $version = (int)$_POST["version"];
     $favorite = htmlentities($_POST["favorite"]);
 
-    return array($email, $age, $gender, $version, $favorite);
+    return array($email, $age, $gender, $pronoun, $version, $favorite);
 }
 
 /**
@@ -106,7 +112,7 @@ function sanitize(){
  */
 function add_data(){
     global $db;
-    $prep_insert = $db->prepare("INSERT INTO project_data (email, age, gender, version, favorite) values (?,?,?,?,?)");
+    $prep_insert = $db->prepare("INSERT INTO project_data (email, age, gender, pronoun, version, favorite) values (?,?,?,?,?,?)");
     $prep_insert->execute(sanitize());
 }
 

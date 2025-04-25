@@ -131,6 +131,45 @@ function gender_distribution(){
 }
 
 /**
+ * Gathers pronoun data and puts it in a format to display well on the data page
+ */
+function pronoun_distribution(){
+    global $db;
+    $prep_selectgen = $db->prepare("SELECT pronoun FROM project_data");
+    $prep_selectgen->execute();
+    $pronoun_data = $prep_selectgen->fetchAll();
+    $pronoun_array["He/Him"] = 0;
+    $pronoun_array["She/Her"] = 0;
+    $pronoun_array["They/Them"] = 0;
+    $pronoun_array["He/They"] = 0;
+    $pronoun_array["She/They"] = 0;
+    $pronoun_array["Choose Not to Say/Other"] = 0;
+    for($i=0;$i<count($pronoun_data);$i++){
+        switch($pronoun_data[$i]["pronoun"][0]){
+            case "h":
+                $pronoun_array["He/Him"]++;
+                break;
+            case "s":
+                $pronoun_array["She/Her"]++;
+                break;
+            case "t":
+                $pronoun_array["They/Them"]++;
+                break;
+            case "H":
+                $pronoun_array["He/They"]++;
+                break;
+            case "S":
+                $pronoun_array["She/They"]++;
+                break;
+            default:
+                $pronoun_array["Choose Not to Say/Other"]++;
+                break;
+        }
+    }
+    return $pronoun_array;
+}
+
+/**
  * Gathers version data and puts it in a format to display well on the data page
  */
 function version_distribution(){
@@ -217,6 +256,8 @@ print("<h2>Age Data:</h2>");
 pretty_display(age_distribution());
 print("<h2>Gender Data:</h2>");
 pretty_display(gender_distribution());
+print("<h2>Pronoun Data:</h2>");
+pretty_display(pronoun_distribution());
 print("<h2>PHP Version Data:</h2>");
 pretty_display(version_distribution());
 

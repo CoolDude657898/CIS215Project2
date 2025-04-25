@@ -53,6 +53,19 @@ for($i=13;$i<65;$i=$i + 5){
 </div>
 
 <div>
+<select name="pronoun" id="pronoun">
+<option value="">--Please select your pronouns--</option>
+    <option value="hh">He/Him</option>
+    <option value="sh">She/Her</option>
+    <option value="tt">They/Them</option>
+    <option value="Ht">He/They</option>
+    <option value="St">She/They</option>
+    <option value="na">Choose not to say/Other</option>
+</select>
+</div>
+
+
+<div>
     <label> What version of PHP do you use? (only include the main version number) <input type="number" name="version" id="version" min="1", max="9" required> </label>
 </div>
 

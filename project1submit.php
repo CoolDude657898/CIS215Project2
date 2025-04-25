@@ -13,10 +13,43 @@
  */
 
 # Retrieved the hashed password as discussed in classes.
-# Password: CIS215php!
+# Password: CIS215php! 
 $hashed_pass = '$2y$10$ViIleDzZvM5nXXfScjwGz.D4GH.CqNabTJ9uoIqydR5.SjmzWuxNi';
 require ('dbconfig.php');
 $db = connectDB();
+
+function validate_user_password_against_criteria($password){
+    $uppercase_in_password = false;
+    $lowercase_in_password = false;
+    $number_in_password = false;
+    $password_length_requirement_met = false;
+
+    $password_characters = str_split($password);
+
+    foreach($password_characters as $character){
+        if(ctype_upper($character)){
+            $uppercase_in_password = true;
+        }
+
+        if(ctype_lower($character)){
+            $lowercase_in_password = true;
+        }
+
+        if(ctype_digit($character)){
+            $number_in_password = true;
+        }
+    }
+
+    if(strlen($password) > 8){
+        $password_length_requirement_met = true;
+    }
+
+    if($uppercase_in_password == true && $lowercase_in_password == true && $number_in_password == true && $password_length_requirement_met == true){
+        return true;
+    }
+
+    return false;
+}
 
 /**
  * Validate returns an empty string if there were no errors, and a message about the worst error if there was one in validation.
@@ -24,9 +57,10 @@ $db = connectDB();
 function validate(){
     global $hashed_pass;
     # The most important piece is the password:
-    if(!password_verify($_POST["pw-name"], $hashed_pass)){
+    if(!password_verify($_POST["global-pw-name"], $hashed_pass)){
         return "Error: Incorrect Password.";
     }
+
     # Next, let's make sure everything was filled in:
     if(($_POST["email-name"] == NULL) or ($_POST["age"] == NULL) or ($_POST["gender"] == "") or ($_POST["pronoun"] == "") or ($_POST["version"] == NULL) or ($_POST["favorite"] == NULL)){
         return "Error: You have not filled in all questions.";
@@ -36,6 +70,10 @@ function validate(){
     # Email
     if(!filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL)){
         return "Please enter a valid email address.";
+    }
+
+    if(!validate_user_password_against_criteria($_POST["user-pw-name"])){
+        return "Your user password has not met the criteria!";
     }
 
     # This next stuff is some complicated SQL commands to determine if there is an email like the one given.
@@ -103,8 +141,28 @@ function sanitize(){
     $pronoun = htmlentities($_POST["pronoun"]);
     $version = (int)$_POST["version"];
     $favorite = htmlentities($_POST["favorite"]);
+    $user_password = password_hash($_POST["user-pw-name"], PASSWORD_DEFAULT);
+    return array($email, $age, $gender, $pronoun, $version, $favorite, $user_password);
+}
 
-    return array($email, $age, $gender, $pronoun, $version, $favorite);
+/*
+Checks if a given email already exists in the database
+*/
+function check_if_email_in_db($email){
+    global $db;
+
+    $prep_select = $db->prepare("SELECT email FROM project_data");
+    $prep_select->execute();
+    
+    $emails = $prep_select->fetchAll();
+    
+    foreach($emails as $email_row){
+        if($email_row[0] == $email){
+            return true;
+        }
+    }
+
+    return false;
 }
 
 /**
@@ -112,8 +170,16 @@ function sanitize(){
  */
 function add_data(){
     global $db;
-    $prep_insert = $db->prepare("INSERT INTO project_data (email, age, gender, pronoun, version, favorite) values (?,?,?,?,?,?)");
-    $prep_insert->execute(sanitize());
+    $data = sanitize();
+
+    if(check_if_email_in_db($data[0]) == false){
+        $prep_insert = $db->prepare("INSERT INTO project_data (email, age, gender, pronoun, version, favorite, user_password) values (?,?,?,?,?,?,?)");
+        $prep_insert->execute($data);
+    }
+
+    if(check_if_email_in_db($data[0]) == true){
+        # Data update
+    }
 }
 
 

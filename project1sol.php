@@ -14,10 +14,22 @@
 <label>Enter your email: </label>
 <input type="email" name="email-name" id="email-id" required>
 
-<label>Enter your password: </label>
-<input type="password" name="pw-name" id="pw-id" required>
+<label>Enter the global password: </label>
+<input type="password" name="global-pw-name" id="global-pw-id" required>
+
+<label>Enter your user password: </label>
+<input type="password" name="user-pw-name" id="user-pw-id">
 
 </fieldset>
+
+<div>
+    <ul>
+        <li>User password must be at least 8 characters long</li>
+        <li>User password must contain an uppercase letter</li>
+        <li>User password must contain a lowercase letter</li>
+        <li>User password must contain a number</li>
+    </ul>
+</div>
 
 <div>
 <label>What age are you? </label>

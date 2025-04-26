@@ -21,7 +21,7 @@
 <input type="password" name="user-pw-name" id="user-pw-id">
 
 </fieldset>
-
+<!--Written by Michael Meacham-->
 <div>
     <ul>
         <li>User password must be at least 8 characters long</li>
@@ -65,6 +65,7 @@ for($i=13;$i<65;$i=$i + 5){
 </div>
 
 <div>
+<!--Written by Amanda Nichols-->
 <select name="pronoun" id="pronoun">
 <option value="">--Please select your pronouns--</option>
     <option value="hh">He/Him</option>
@@ -94,5 +95,7 @@ for($i=13;$i<65;$i=$i + 5){
 </form>
 
 <div><a href='project1data.php'>View data page here</a></div>
+
+<script src="main.js"></script>
 
 </body></html>

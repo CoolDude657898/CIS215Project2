@@ -18,6 +18,9 @@ $hashed_pass = '$2y$10$ViIleDzZvM5nXXfScjwGz.D4GH.CqNabTJ9uoIqydR5.SjmzWuxNi';
 require ('dbconfig.php');
 $db = connectDB();
 
+/**
+ * Validates that password user entered meets criteria set for passwords
+ */
 function validate_user_password_against_criteria($password){
     $uppercase_in_password = false;
     $lowercase_in_password = false;
@@ -71,35 +74,14 @@ function validate(){
     if(!filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL)){
         return "Please enter a valid email address.";
     }
-
-    if(!validate_user_password_against_criteria($_POST["user-pw-name"])){
-        return "Your user password has not met the criteria!";
-    }
-
+    
     if(check_if_email_in_db(filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL)) && !check_if_user_password_correct(filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL), $_POST["user-pw-name"])){
         return "Your user password is incorrect!";
     }
 
-    # This next stuff is some complicated SQL commands to determine if there is an email like the one given.
-    # equivalent to: select count(email) from project_data where email like "kegross%" and email like "%genesee.edu";
-    # assuming kegross@genesee.edu is the email
-    # it'll find the count! Try it out!
-    # % is a placeholder, saying any value could be there (like a wildcard)
-
-    ## This is the Email validation that doesn't work!
-
-    /* $email = filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL);
-    $email_pieces = explode("@", $email);
-    $front = '"' . $email_pieces[0] . "%" . '"';
-    $back = '"' . "%" . $email_pieces[1] . '"';
-    global $db;
-    $num_emails = $db->prepare("SELECT count(email) FROM project_data where email like $front and email like $back");
-    $num_emails->execute();
-    $fetch_emails = $num_emails->fetchAll();
-    # This is getting the size of the array, because all we care about is if it's empty or not
-    if(count($fetch_emails) > 0){
-        return "Only one entry per email.";
-    } */
+    if(!validate_user_password_against_criteria($_POST["user-pw-name"])){
+        return "Your user password has not met the criteria!";
+    }
 
     # Age
     $age_list = ["0"];
@@ -151,6 +133,7 @@ function sanitize(){
 
 /*
 Checks if a given email already exists in the database
+Written by Michael Meacham
 */
 function check_if_email_in_db($email){
     global $db;
@@ -171,6 +154,7 @@ function check_if_email_in_db($email){
 
 /*
 Checks if the user's password matches password associated with email used
+Written by Amanda Nichols
 */
 function check_if_user_password_correct($email, $user_password){
     global $db;

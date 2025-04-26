@@ -132,6 +132,7 @@ function gender_distribution(){
 
 /**
  * Gathers pronoun data and puts it in a format to display well on the data page
+ * Written by Amanda Nichols
  */
 function pronoun_distribution(){
     global $db;

@@ -76,6 +76,10 @@ function validate(){
         return "Your user password has not met the criteria!";
     }
 
+    if(check_if_email_in_db(filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL)) && !check_if_user_password_correct(filter_var($_POST["email-name"], FILTER_VALIDATE_EMAIL), $_POST["user-pw-name"])){
+        return "Your user password is incorrect!";
+    }
+
     # This next stuff is some complicated SQL commands to determine if there is an email like the one given.
     # equivalent to: select count(email) from project_data where email like "kegross%" and email like "%genesee.edu";
     # assuming kegross@genesee.edu is the email
@@ -165,8 +169,22 @@ function check_if_email_in_db($email){
     return false;
 }
 
+/*
+Checks if the user's password matches password associated with email used
+*/
+function check_if_user_password_correct($email, $user_password){
+    global $db;
+
+    $prep_select = $db->prepare("SELECT user_password FROM project_data WHERE email = ?");
+    $prep_select->execute([$email]);
+
+    $user_password_hash = $prep_select->fetch();
+
+    return password_verify($user_password, $user_password_hash["user_password"]);
+}
+
 /**
- * Add Data adds sanitized data into SQL safely
+ * Add Data adds sanitized data into SQL safely, returns false if existing user entered incorrect password
  */
 function add_data(){
     global $db;
@@ -178,19 +196,24 @@ function add_data(){
     }
 
     if(check_if_email_in_db($data[0]) == true){
-        $update_data = $data;
-        $update_data[] = $data[0];
+        if(check_if_user_password_correct($data[0], $_POST["user-pw-name"])){
+            $update_data = $data;
+            $update_data[] = $data[0];
 
-        $prep_update = $db->prepare("UPDATE project_data SET email = ?, age = ?, gender = ?, pronoun = ?, version = ?, favorite = ?, user_password = ? WHERE email = ?");
-        $prep_update->execute($update_data);
+            $prep_update = $db->prepare("UPDATE project_data SET email = ?, age = ?, gender = ?, pronoun = ?, version = ?, favorite = ?, user_password = ? WHERE email = ?");
+            $prep_update->execute($update_data);
+        }
+        else {
+            return false;
+        }
     }
+    return true;
 }
 
 
-if(validate()==""){
+if(validate()=="" && add_data()){
     print("<div>Thanks for your submission!</div>");
     print("<div><a href='project1data.php'>View data page here</a></div>");
-    add_data();
 } else{
     print("<div>We could not take your data at this time</div>");
     print(validate());

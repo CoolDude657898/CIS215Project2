@@ -9,7 +9,7 @@
 /**
  * Note: I created my SQL table in PuTTY using the following command:
  * 
- * CREATE TABLE project_data (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(320), age INT, gender CHAR(2), pronoun CHAR(2), version INT, favorite VARCHAR(120));
+ * CREATE TABLE project_data (id INT PRIMARY KEY AUTO_INCREMENT, email VARCHAR(320), age INT, gender CHAR(2), pronoun CHAR(2), version INT, favorite VARCHAR(120), user_password VARCHAR(60));
  */
 
 # Retrieved the hashed password as discussed in classes.
@@ -114,7 +114,7 @@ function validate(){
 
     # Pronoun
     if(strlen($_POST["pronoun"]) != 2){
-        return "Please select pronouns from the gender dropdown.";
+        return "Please select pronouns from the pronoun dropdown.";
     }
 
     # Version
@@ -178,7 +178,11 @@ function add_data(){
     }
 
     if(check_if_email_in_db($data[0]) == true){
-        # Data update
+        $update_data = $data;
+        $update_data[] = $data[0];
+
+        $prep_update = $db->prepare("UPDATE project_data SET email = ?, age = ?, gender = ?, pronoun = ?, version = ?, favorite = ?, user_password = ? WHERE email = ?");
+        $prep_update->execute($update_data);
     }
 }
 

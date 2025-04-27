@@ -2,7 +2,9 @@
 /**
  * Written by Michael Meacham
  */
-$email = $GET_["email"];
+$email = $_GET["email"];
+require("dbconfig.php");
+$db = connectDB();
 
 function check_if_email_in_db($email){
     global $db;

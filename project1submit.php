@@ -20,6 +20,7 @@ $db = connectDB();
 
 /**
  * Validates that password user entered meets criteria set for passwords
+ * Written by Michael Meacham
  */
 function validate_user_password_against_criteria($password){
     $uppercase_in_password = false;

@@ -20,6 +20,9 @@
 <label>Enter your user password: </label>
 <input type="password" name="user-pw-name" id="user-pw-id">
 
+<!--Written by Amanda Nichols-->
+<small id="password-meter" style="background-color:red"> Too Weak </small>
+
 </fieldset>
 <!--Written by Michael Meacham-->
 <div>
@@ -97,5 +100,7 @@ for($i=13;$i<65;$i=$i + 5){
 <div><a href='project1data.php'>View data page here</a></div>
 
 <script src="main.js"></script>
+<script src="passwordmeter.js"></script>
+
 
 </body></html>

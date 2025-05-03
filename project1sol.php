@@ -11,19 +11,21 @@
 
 <fieldset>
 
-<label>Enter your email: </label>
+<label id="email-label">Enter your email: </label>
 <input type="email" name="email-name" id="email-id" required>
 
 <label>Enter the global password: </label>
 <input type="password" name="global-pw-name" id="global-pw-id" required>
 
-<label>Enter your user password: </label>
+<label id="user-password-label">Enter your user password: </label>
 <input type="password" name="user-pw-name" id="user-pw-id">
 
 <!--Written by Amanda Nichols-->
 <small id="password-meter" style="background-color:red"> Too Weak </small>
 
 </fieldset>
+
+<div id="password-protected-div">
 <!--Written by Michael Meacham-->
 <div>
     <ul>
@@ -95,12 +97,14 @@ for($i=13;$i<65;$i=$i + 5){
 
 <button type="submit" name="button-submit-form" id = "button-submit-form-id">Submit</button>
 
+</div>
+
 </form>
 
 <div><a href='project1data.php'>View data page here</a></div>
 
 <script src="main.js"></script>
 <script src="passwordmeter.js"></script>
-
+<script src="fakeloginpage.js"></script>
 
 </body></html>

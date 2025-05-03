@@ -272,4 +272,14 @@ print("</div>");
 
 ?>
 
+<!--Written by Amanda Nichols-->
+<div>
+  <label id="background-color-label">Background Color: </label>
+  <input type="color" id="background-color" value="#FFFFFF">
+  <label id="text-color-label">Text Color: </label>
+  <input type="color" id="text-color" value="#000000">
+</div>
+
+<script src="colorchanger.js"></script>
+
 </body></html>

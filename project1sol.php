@@ -97,13 +97,22 @@ for($i=13;$i<65;$i=$i + 5){
 
 <button type="submit" name="button-submit-form" id = "button-submit-form-id">Submit</button>
 
+<!--Written by Amanda Nichols-->
+<div>
+  <label id="background-color-label">Background Color: </label>
+  <input type="color" id="background-color" value="#FFFFFF">
+  <label id="text-color-label">Text Color: </label>
+  <input type="color" id="text-color" value="#000000">
+</div>
+
 </div>
 
 </form>
 
 <div><a href='project1data.php'>View data page here</a></div>
 
-<script src="main.js"></script>
+<script src="colorchanger.js"></script>
+<script src="uniqueemails.js"></script>
 <script src="passwordmeter.js"></script>
 <script src="fakeloginpage.js"></script>
 

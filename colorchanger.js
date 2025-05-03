@@ -3,14 +3,10 @@
 const backgroundButton = document.getElementById("background-color");
 const textButton = document.getElementById("text-color");
 
-backgroundButton.addEventListener("blur", changeBackgroundColor);
-
-textButton.addEventListener("blur", changeTextColor);
-
-function changeBackgroundColor() {
+backgroundButton.addEventListener("input", function() {
     document.body.style.backgroundColor = backgroundButton.value;
-}
+});
 
-function changeTextColor() {
+textButton.addEventListener("input", function() {
     document.body.style.color = textButton.value;
-}
+});

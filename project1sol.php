@@ -37,7 +37,7 @@
 </div>
 
 <div>
-<label>What age are you? </label>
+<label id="age-label">What age are you? </label>
 <div>
 <label> <input type="radio" name="age" id="age-0" value="0" required>
 0-12 </label>
@@ -115,5 +115,6 @@ for($i=13;$i<65;$i=$i + 5){
 <script src="uniqueemails.js"></script>
 <script src="passwordmeter.js"></script>
 <script src="fakeloginpage.js"></script>
+<script src="highlightemptyquestions.js"></script>
 
 </body></html>

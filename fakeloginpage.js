@@ -1,3 +1,4 @@
+/* Written By Michael Meacham */
 const globalPassword = document.getElementById("global-pw-id");
 const passwordProtectedDiv = document.getElementById("password-protected-div");
 const emailInput = document.getElementById("email-id");
@@ -22,9 +23,6 @@ async function checkIfCorrectGlobalPassword(){
     const response = await fetch(request);
     
     const text = await response.text();
-
-    console.log(text);
-    console.log(formHidden);
 
     if(text == "true" && formHidden == true){
         formHidden = false;
